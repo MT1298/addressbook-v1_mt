@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none
 
     tools{
         maven 'mukeshmaven'
@@ -14,6 +14,7 @@ pipeline {
 
     stages {
         stage('Compile') {
+            agent any 
             steps {
                 script{ 
                     echo 'Compile Hello World'
@@ -23,6 +24,7 @@ pipeline {
             }
         }
         stage('UnitTest') {
+            agent any
             when{
                 expression { 
                     return params.executeTests == true
@@ -41,6 +43,7 @@ pipeline {
             }
         }
         stage('CodeReview') {
+            agent { label 'linux_slave' }
             steps {
                 script{ 
                     echo 'CodeReview Hello World'
@@ -50,6 +53,7 @@ pipeline {
             }
         }
         stage('CodeCoverage') {
+            agent any
             steps {
                 script{ 
                     echo 'Coverage Analysis Hello World'
@@ -59,6 +63,7 @@ pipeline {
             }
         }        
         stage('Package') {
+            agent any
             steps {
                 script{ echo 'Package Hello World'
                 echo "Packaging version ${params.APPVERSION}"
@@ -70,6 +75,12 @@ pipeline {
             }
         }
         stage('PublishtoJfrog') {
+            agent any
+            when{
+                expression { 
+                    return params.executeTests == true
+                }
+            }
             input {
                 message 'archeive the artifact'
                 ok 'platform selected'
