@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tool {
+        maven 'mukeshmaven'
+    }
+
     parameters {
         string(name: 'Env', defaultValue: 'Test', description: 'Version to deploy')
         booleanParam(name: 'executeTests', defaultValue: true, description: 'Decide to run tc')
@@ -26,7 +30,7 @@ pipeline {
             }
             steps {
                 script{ echo 'Run UnitTest cases for Hello World'
-                sh 'mvn tests'
+                sh 'mvn test'
                }
             
             }
@@ -34,7 +38,7 @@ pipeline {
         stage('CodeReview') {
             steps {
                 script{ 
-                    echo 'Compile Hello World'
+                    echo 'CodeReview Hello World'
                     echo "deploying in ${params.Env} environment"
                     sh "mvn pmd:pmd"
                 }
@@ -43,7 +47,7 @@ pipeline {
         stage('CodeCoverage') {
             steps {
                 script{ 
-                    echo 'Compile Hello World'
+                    echo 'Coverage Analysis Hello World'
                     echo "deploying in ${params.Env} environment"
                     sh "mvn verify"
                 }
@@ -63,7 +67,7 @@ pipeline {
         stage('PublishtoJfrog') {
             steps {
                 script{ 
-                    echo 'Compile Hello World'
+                    echo 'Publish to jfrog Hello World'
                     echo "deploying in ${params.Env} environment"
                     sh "mvn -u deploy -s settings.xml"
                 }
