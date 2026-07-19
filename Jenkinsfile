@@ -11,26 +11,63 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
-                echo 'Compile Hello World'
-                echo "deploying in ${params.Env} environment"
+                script{ 
+                    echo 'Compile Hello World'
+                    echo "deploying in ${params.Env} environment"
+                    sh "mvn compile"
+                }
             }
         }
         stage('UnitTest') {
-            when {
+            when{
                 expression{ 
-                    return params.executeTests == true
+                    params.executeTests == true
                 }
             }
             steps {
-                echo 'Run UnitTest cases for Hello World'
+                script{ echo 'Run UnitTest cases for Hello World'
+                sh 'mvn tests'
+               }
+            
             }
         }
+        stage('CodeReview') {
+            steps {
+                script{ 
+                    echo 'Compile Hello World'
+                    echo "deploying in ${params.Env} environment"
+                    sh "mvn pmd:pmd"
+                }
+            }
+        }
+        stage('CodeCoverage') {
+            steps {
+                script{ 
+                    echo 'Compile Hello World'
+                    echo "deploying in ${params.Env} environment"
+                    sh "mvn verify"
+                }
+            }
+        }        
         stage('Package') {
             steps {
-                echo 'Package Hello World'
+                script{ echo 'Package Hello World'
                 echo "Packaging version ${params.APPVERSION}"
+                sh "mvn package"
+
+                }
+
+     
+            }
+        }
+        stage('PublishtoJfrog') {
+            steps {
+                script{ 
+                    echo 'Compile Hello World'
+                    echo "deploying in ${params.Env} environment"
+                    sh "mvn -u deploy -s settings.xml"
+                }
             }
         }
     }
 }
-
