@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    tool {
+    tools{
         maven 'mukeshmaven'
     }
 
@@ -69,7 +69,7 @@ pipeline {
                 script{ 
                     echo 'Publish to jfrog Hello World'
                     echo "deploying in ${params.Env} environment"
-                    sh "mvn -u deploy -s settings.xml"
+                    sh "mvn -U deploy -s settings.xml"
                 }
             }
         }
