@@ -28,7 +28,7 @@ pipeline {
         stage('Package') {
             steps {
                 echo 'Package Hello World'
-                eccho "Packaging version ${params.APPVERSION}"
+                echo "Packaging version ${params.APPVERSION}"
             }
         }
     }
