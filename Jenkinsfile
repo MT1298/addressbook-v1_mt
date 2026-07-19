@@ -70,9 +70,16 @@ pipeline {
             }
         }
         stage('PublishtoJfrog') {
+            input {
+                message 'archeive the artifact'
+                ok 'platform selected'
+                parameters {
+                    choice(name:'Platform',choices: ['Nexus', 'Jfrog'])
+                }
+            }
             steps {
                 script{ 
-                    echo 'Publish to jfrog Hello World'
+                    echo 'Publish to jfrog'
                     echo "deploying in ${params.Env} environment"
                     sh "mvn -U deploy -s settings.xml"
                 }
