@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <servers>
+    <server>
+      <username>m.thorat1@tcs.com</username>
+      <password>cmVmdGtuOjAxOjE4MTU4MzQ0NTc6dXo1Q0FROGo5cTU1azdibG5VR1B2bjh6UWJN</password>
+      <id>central</id>
+    </server>
+    <server>
+      <username>m.thorat1@tcs.com</username>
+      <password>cmVmdGtuOjAxOjE4MTU4MzQ0NTc6dXo1Q0FROGo5cTU1azdibG5VR1B2bjh6UWJN</password>
+      <id>snapshots</id>
+    </server>
+  </servers>
+  <profiles>
+    <profile>
+      <repositories>
+        <repository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>central</id>
+          <name>demo_mukesh1-libs-release</name>
+          <url>https://mukeshdevopsdemo.jfrog.io/artifactory/demo_mukesh1-libs-release</url>
+        </repository>
+        <repository>
+          <snapshots />
+          <id>snapshots</id>
+          <name>demo_mukesh1-libs-snapshot</name>
+          <url>https://mukeshdevopsdemo.jfrog.io/artifactory/demo_mukesh1-libs-snapshot</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>central</id>
+          <name>demo_mukesh1-libs-release</name>
+          <url>https://mukeshdevopsdemo.jfrog.io/artifactory/demo_mukesh1-libs-release</url>
+        </pluginRepository>
+        <pluginRepository>
+          <snapshots />
+          <id>snapshots</id>
+          <name>demo_mukesh1-libs-snapshot</name>
+          <url>https://mukeshdevopsdemo.jfrog.io/artifactory/demo_mukesh1-libs-snapshot</url>
+        </pluginRepository>
+      </pluginRepositories>
+      <id>artifactory</id>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>artifactory</activeProfile>
+  </activeProfiles>
+</settings>
