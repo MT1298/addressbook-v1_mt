@@ -1,28 +1,31 @@
-FROM tomcat:9.0-jdk8-temurin
+# Stage 1: Build stage
+FROM maven:3.8.4-openjdk-11-slim AS build-stage
 
-ENV MAVEN_HOME=/usr/share/maven
-ENV MAVEN_VERSION=3.8.8
-
-RUN apt-get update && \
-    apt-get install -y curl && \
-    curl -fsSL https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
-    | tar -xz -C /usr/share && \
-    mv /usr/share/apache-maven-${MAVEN_VERSION} ${MAVEN_HOME} && \
-    ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
+# Set the working directory inside the container
 WORKDIR /app
 
-COPY pom.xml .
-COPY src ./src
+# Copy the Maven project definition files
+COPY pom.xml /app/pom.xml
+
+# Download the dependencies needed for the build (cache them in a separate layer)
+RUN mvn dependency:go-offline
+
+# Copy the application source code
+COPY ./src /app/src
 COPY settingscopy.xml /app/settings.xml
 
-RUN mvn clean package
+# Build the WAR file
+RUN mvn package
 RUN mvn -U deploy -s /app/settings.xml
-RUN cp target/addressbook.war /usr/local/tomcat/webapps/
 
+# Stage 2: Production stage
+FROM tomcat:8.5.78-jdk11-openjdk-slim
 
+# Copy the built WAR file from the build stage to the Tomcat webapps directory
+COPY --from=build-stage /app/target/*.war /usr/local/tomcat/webapps/
+
+# Expose the port on which Tomcat will listen (usually port 8080)
 EXPOSE 8080
 
-CMD ["catalina.sh","run"]
+# Start Tomcat
+CMD ["catalina.sh", "run"]
